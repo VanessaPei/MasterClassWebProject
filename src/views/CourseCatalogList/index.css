@@ -8,7 +8,6 @@
     margin-top: 20px;
 }
 
-
 .courseCatalogList .item:active{
     background-color:#1C2531;
 }
@@ -24,6 +23,7 @@
     align-items:center;
     flex-direction: column;
     padding:20px;
+    position: relative;
 }
 
 .courseCatalogList .name{

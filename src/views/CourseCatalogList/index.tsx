@@ -1,12 +1,10 @@
 import React from 'react';
-import FilterOptions from './FilterOptions';
-import List from './List';
+import CourseCatalogList from './List';
 
 function Index() {
     return (
         <div>
-            <FilterOptions />
-            <List />
+            <CourseCatalogList />
         </div>
     );
 }
