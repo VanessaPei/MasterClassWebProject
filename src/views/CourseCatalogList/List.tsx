@@ -4,6 +4,8 @@ import React, { useEffect, useMemo, useState } from "react";
 // import { queryCourseCatalogList } from "../../api";
 import CourseCatalogListData from "../../mock/CourseCatalogListData";
 import { ICourseCatalogList } from "../../types";
+import { addStorage } from "../../utils";
+import { useGetFavoriteList } from "../Hooks";
 import "./index.css";
 
 function CourseCatalogList() {
@@ -11,6 +13,7 @@ function CourseCatalogList() {
     ICourseCatalogList[]
   >([]);
   const [isRating, setIsRating] = useState<boolean>(false);
+  const [favoriteList, setFavoriteList] = useGetFavoriteList();
 
   useEffect(() => {
     setCourseCatalogList(CourseCatalogListData);
@@ -24,26 +27,38 @@ function CourseCatalogList() {
     }
   }, [courseCatalogList, isRating]);
 
+  const favoriteListId = useMemo<number[]>(
+    () => favoriteList.map((item) => item.id),
+    [favoriteList]
+  );
+
+  function addFavorite(data: ICourseCatalogList) {
+    setFavoriteList([...favoriteList, data]);
+    addStorage(data);
+  }
+
   return (
     <div className="courseCatalogList">
       <Button onClick={() => setIsRating(true)}>rating</Button>
       {computeCourseCatalogList.map((item) => (
-        <div className="item" key={item.id}>
+        <div className="item" key={item.id} onClick={() => addFavorite(item)}>
           <img
             className="img"
             src={item.instructor_image_url}
             alt={item.instructor_name}
           />
           <div className="detail">
-            <Icon
-              type="check-circle"
-              style={{
-                color: "red",
-                position: "absolute",
-                top: "20",
-                right: "20",
-              }}
-            />
+            {favoriteListId.includes(item.id) && (
+              <Icon
+                type="check-circle"
+                style={{
+                  color: "red",
+                  position: "absolute",
+                  top: "20",
+                  right: "20",
+                }}
+              />
+            )}
             <p className="name">{item.instructor_name}</p>
             <p className="desc" title={item.description}>
               {item.description}
