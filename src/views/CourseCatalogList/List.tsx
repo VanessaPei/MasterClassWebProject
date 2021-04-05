@@ -1,10 +1,10 @@
 import { Icon, Button } from "antd-mobile";
 import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 // import { useQuery } from "react-query";
 // import { queryCourseCatalogList } from "../../api";
 import CourseCatalogListData from "../../mock/CourseCatalogListData";
 import { ICourseCatalogList } from "../../types";
-import { addStorage } from "../../utils";
 import { useGetFavoriteList } from "../Hooks";
 import "./index.css";
 
@@ -13,7 +13,7 @@ function CourseCatalogList() {
     ICourseCatalogList[]
   >([]);
   const [isRating, setIsRating] = useState<boolean>(false);
-  const [favoriteList, setFavoriteList] = useGetFavoriteList();
+  const [favoriteList, proxySetFavoriteList] = useGetFavoriteList();
 
   useEffect(() => {
     setCourseCatalogList(CourseCatalogListData);
@@ -32,40 +32,51 @@ function CourseCatalogList() {
     [favoriteList]
   );
 
-  function addFavorite(data: ICourseCatalogList) {
-    setFavoriteList([...favoriteList, data]);
-    addStorage(data);
+  function addFavorite(data: ICourseCatalogList, isFavorite: boolean) {
+    if (isFavorite) return;
+    proxySetFavoriteList([...favoriteList, data]);
   }
 
   return (
     <div className="courseCatalogList">
+      <Button>
+        <Link to="/favorite">FavoriteList</Link>
+      </Button>
+
       <Button onClick={() => setIsRating(true)}>rating</Button>
-      {computeCourseCatalogList.map((item) => (
-        <div className="item" key={item.id} onClick={() => addFavorite(item)}>
-          <img
-            className="img"
-            src={item.instructor_image_url}
-            alt={item.instructor_name}
-          />
-          <div className="detail">
-            {favoriteListId.includes(item.id) && (
-              <Icon
-                type="check-circle"
-                style={{
-                  color: "red",
-                  position: "absolute",
-                  top: "20",
-                  right: "20",
-                }}
-              />
-            )}
-            <p className="name">{item.instructor_name}</p>
-            <p className="desc" title={item.description}>
-              {item.description}
-            </p>
+      {computeCourseCatalogList.map((item) => {
+        const isFavorite = favoriteListId.includes(item.id);
+        return (
+          <div
+            className="item"
+            key={item.id}
+            onClick={() => addFavorite(item, isFavorite)}
+          >
+            <img
+              className="img"
+              src={item.instructor_image_url}
+              alt={item.instructor_name}
+            />
+            <div className="detail">
+              {isFavorite && (
+                <Icon
+                  type="check-circle"
+                  style={{
+                    color: "red",
+                    position: "absolute",
+                    top: "20",
+                    right: "20",
+                  }}
+                />
+              )}
+              <p className="name">{item.instructor_name}</p>
+              <p className="desc" title={item.description}>
+                {item.description}
+              </p>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

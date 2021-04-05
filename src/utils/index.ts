@@ -8,16 +8,14 @@ function StrToObj(data: string): Object {
   return JSON.parse(data);
 }
 
-export const addStorage = (data: ICourseCatalogList) => {
-  const favoriteListStr = localStorage.getItem("favoriteList");
-  if (favoriteListStr === null) {
-    localStorage.setItem("favoriteList", ObjToStr([data]));
-  } else {
-    localStorage.setItem(
-      "favoriteList",
-      ObjToStr([...(StrToObj(favoriteListStr) as []), data])
-    );
-  }
+export const addStorage = (data: ICourseCatalogList[]) => {
+  // const favoriteListStr = localStorage.getItem("favoriteList");
+  // if (favoriteListStr === null) {
+  //   localStorage.setItem("favoriteList", ObjToStr([data]));
+  // } else {
+
+  // }
+  localStorage.setItem("favoriteList", ObjToStr(data));
 };
 
 export const getStorage = (): ICourseCatalogList[] => {
