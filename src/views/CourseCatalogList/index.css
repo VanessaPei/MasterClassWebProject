@@ -1,0 +1,41 @@
+.courseCatalogList{
+    background-color: #000000;
+}
+
+.courseCatalogList .item{
+    background-color: #1A1C21;
+    display: flex;
+    margin-top: 20px;
+}
+
+
+.courseCatalogList .item:active{
+    background-color:#1C2531;
+}
+
+.courseCatalogList .img{
+    width: 100px;
+}
+
+.courseCatalogList .detail{
+    box-sizing: border-box;
+    width:calc(100% - 100px);
+    display: flex;
+    align-items:center;
+    flex-direction: column;
+    padding:20px;
+}
+
+.courseCatalogList .name{
+    width:100%;
+    color:#FFFFFF;
+    text-align: left;
+}
+.courseCatalogList .desc{
+    width:100%;
+    color: #9C9D9E;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
